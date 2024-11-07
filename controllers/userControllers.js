@@ -7,45 +7,45 @@ const jwt = require('jsonwebtoken');
 // POST : api/users/register
 //UNPROTECTED
 
-const registerUser = async (req, res, next) => {
-    try {
-        const { email, password, password2, isAdmin = false } = req.body;
+// const registerUser = async (req, res, next) => {
+//     try {
+//         const { email, password, password2, isAdmin = false } = req.body;
 
-        if (!email || !password) {
-            return res.json("Fill in all the fields");
-        }
+//         if (!email || !password) {
+//             return res.json("Fill in all the fields");
+//         }
 
-        const newEmail = email.toLowerCase();
+//         const newEmail = email.toLowerCase();
 
-        const emailExists = await User.findOne({ email: newEmail });
-        if (emailExists) {
-            return res.json("Email already exists!");
-        }
+//         const emailExists = await User.findOne({ email: newEmail });
+//         if (emailExists) {
+//             return res.json("Email already exists!");
+//         }
 
-        if (password.trim().length < 6) {
-            return res.json("Password should be at least 6 characters");
-        }
+//         if (password.trim().length < 6) {
+//             return res.json("Password should be at least 6 characters");
+//         }
 
-        if (password !== password2) {
-            return res.json("Passwords do not match");
-        }
+//         if (password !== password2) {
+//             return res.json("Passwords do not match");
+//         }
 
-        const salt = await bcryptjs.genSalt(10);
-        const hashedPass = await bcryptjs.hash(password, salt);
+//         const salt = await bcryptjs.genSalt(10);
+//         const hashedPass = await bcryptjs.hash(password, salt);
 
-        // Include `isAdmin` field in the user creation
-        const newUser = await User.create({
-            email: newEmail,
-            password: hashedPass,
-            isAdmin,  // Set `isAdmin` based on request or default
-        });
+//         // Include `isAdmin` field in the user creation
+//         const newUser = await User.create({
+//             email: newEmail,
+//             password: hashedPass,
+//             isAdmin,  // Set `isAdmin` based on request or default
+//         });
 
-        res.status(201).json(`New User ${newUser.email} has been registered successfully!`);
-    } catch (error) {
-        console.log(error);
-        res.status(422).json("Registration failed");
-    }
-};
+//         res.status(201).json(`New User ${newUser.email} has been registered successfully!`);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(422).json("Registration failed");
+//     }
+// };
 
 
 
@@ -114,6 +114,7 @@ const requireAdmin = (req, res, next) => {
         res.status(401).json("Invalid or expired token.");
     }
 };
+
 
 
 
